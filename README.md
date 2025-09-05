@@ -1,4 +1,4 @@
-# Dating Challenge
+# Dating
 
 Este projeto é dividido em modulos gradle para desacoplar as responsabilidades
 
