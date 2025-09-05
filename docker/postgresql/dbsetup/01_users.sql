@@ -1,0 +1,2 @@
+---- Criar schema
+--CREATE SCHEMA IF NOT EXISTS dating_adm AUTHORIZATION postgres;

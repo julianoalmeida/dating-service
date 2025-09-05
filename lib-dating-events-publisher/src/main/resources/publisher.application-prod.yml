@@ -1,0 +1,27 @@
+#Kafka de PROD
+kafka:
+  producer:
+    clientId: ${spring.application.name}[${spring.profiles.active}][datingEventProducer]}
+    schema:
+      registry:
+        url: http://0.0.0.0:8081
+    bootstrap:
+      servers: 0.0.0.0:9092
+    ssl:
+      enabled: false
+
+spring:
+  kafka:
+    ssl:
+      key-store-location: ${KAFKA_SSL_KEYSTORE_LOCATION:file:./certs/kafka/prod/dating.keystore.p12}
+      key-store-password: ${KAFKA_SSL_KEYSTORE_PASSWORD}
+      key-store-type: "pkcs12"
+      trust-store-location: ${KAFKA_SSL_TRUSTSTORE_LOCATION:file:./certs/kafka/prod/dating.truststore.p12}
+      trust-store-password: ${KAFKA_SSL_TRUSTSTORE_PASSWORD}
+      protocol: "TLSv1.2"
+      trust-store-type: "pkcs12"
+    security:
+      protocol: "SSL"
+
+
+

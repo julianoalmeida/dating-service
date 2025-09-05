@@ -1,0 +1,26 @@
+#Kafka de QA
+kafka:
+  consumer:
+    schema:
+      registry:
+        url: http://0.0.0.0:8081
+    bootstrap:
+      servers: 0.0.0.0:9092
+    topic:
+      user-message: fct.user.message.event-dev
+    listener:
+      userChatEventListener:
+        enabled: true
+
+spring:
+  kafka:
+    ssl:
+      key-store-location: ${KAFKA_SSL_KEYSTORE_LOCATION:file:./certs/kafka/qa/dating.keystore.p12}
+      key-store-password: ${KAFKA_SSL_KEYSTORE_PASSWORD:mudar}
+      key-store-type: "pkcs12"
+      trust-store-location: ${KAFKA_SSL_TRUSTSTORE_LOCATION:file:./certs/kafka/qa/dating.truststore.p12}
+      trust-store-password: ${KAFKA_SSL_TRUSTSTORE_PASSWORD:mudar}
+      protocol: "TLSv1.2"
+      trust-store-type: "pkcs12"
+    security:
+      protocol: "SSL"

@@ -1,0 +1,66 @@
+---
+version: '3'
+services:
+  zookeeper:
+    extends:
+      file: docker-compose.yml
+      service: zookeeper
+  broker:
+    extends:
+      file: docker-compose.yml
+      service: broker
+    depends_on:
+      - zookeeper
+  schema-registry:
+    extends:
+      file: docker-compose.yml
+      service: schema-registry
+    depends_on:
+      - broker
+  connect:
+    extends:
+      file: docker-compose.yml
+      service: connect
+    depends_on:
+      - broker
+      - schema-registry
+  control-center:
+    extends:
+      file: docker-compose.yml
+      service: control-center
+    depends_on:
+      - broker
+      - schema-registry
+      - connect
+      - ksqldb-server
+  ksql-datagen:
+    extends:
+      file: docker-compose.yml
+      service: ksql-datagen
+    depends_on:
+      - ksqldb-server
+      - broker
+      - schema-registry
+      - connect
+  ksqldb-cli:
+    extends:
+      file: docker-compose.yml
+      service: ksqldb-cli
+    depends_on:
+      - broker
+      - connect
+      - ksqldb-server
+  ksqldb-server:
+    extends:
+      file: docker-compose.yml
+      service: ksqldb-server
+    depends_on:
+      - broker
+      - connect
+  rest-proxy:
+    extends:
+      file: docker-compose.yml
+      service: rest-proxy
+    depends_on:
+      - broker
+      - schema-registry

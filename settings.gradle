@@ -1,0 +1,8 @@
+rootProject.name = 'dating-service'
+
+include 'app-dating-api'
+include 'lib-dating-core'
+include 'lib-dating-events-publisher'
+
+include 'app-dating-jobs'
+include 'app-dating-events-consumer'

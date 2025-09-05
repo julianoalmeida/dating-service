@@ -1,0 +1,30 @@
+{
+  "type": "record",
+  "name": "EventMetadata",
+  "namespace": "dating.event",
+  "fields": [
+    {
+      "name": "eventDate",
+      "type": "string"
+    },
+    {
+      "name": "eventId",
+      "type": "string",
+      "logicalType": "uuid"
+    },
+    {
+      "name": "partitionKey",
+      "type": "string",
+      "logicalType": "uuid"
+    },
+    {
+      "name": "origin",
+      "type": "string"
+    },
+    {
+      "name": "changeAgent",
+      "type": ["null", "string"],
+      "default": null
+    }
+  ]
+}

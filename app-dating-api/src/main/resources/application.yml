@@ -1,0 +1,74 @@
+server:
+  port: ${SERVER_PORT:8084}
+
+spring:
+  profiles:
+    active: local
+  application:
+    name: dating-rest-api
+  cloud:
+    discovery.client.composite-inicator.enabled: false
+  messages:
+    basename: i18n/messages
+    encoding: ISO-8859-1
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+app:
+  jwt:
+    secret: Ol4ZpAo473PcHKWQo8-E3IzYWlyGmcldQho3eAGknA-71QvNRC10xshYAUA4-F6jdd28WNAqcAoi46-4TUrbZA==
+    expiration: 86400000
+    refresh-expiration: 604800000
+  cors:
+    allowed-origins: "*"
+    allowed-methods: "GET,POST,PUT,DELETE,OPTIONS"
+    allowed-headers: "*"
+  websocket:
+    allowed-origins: "*"
+
+management:
+  tracing:
+    propagation:
+      type: B3
+    enabled: true
+  endpoints:
+    web.exposure.include: health,metrics
+  endpoint:
+    health:
+      probes.enabled: true
+      group:
+        liveness.include: livenessState,refreshScope,diskSpace
+        readiness.include: readinessState,db
+      show-components: always
+      show-details: always
+  health:
+    circuitbreakers:
+      enabled: true
+    ratelimiters:
+      enabled: true
+  otlp:
+    metrics:
+      export:
+        resourceAttributes:
+          service:
+            name: "dating-rest-api"
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+    operationsSorter: method
+    filter: true
+    display-request-duration: true
+    tags-sorter: alpha
+
+openapi:
+  params:
+    title: "dating REST API"
+    description: "REST API - dating"
+

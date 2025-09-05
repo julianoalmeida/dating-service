@@ -1,0 +1,86 @@
+{
+  "fields": [
+    {
+      "doc": "Metadata do evento",
+      "name": "metadata",
+      "type": {
+        "fields": [
+          {
+            "name": "eventDate",
+            "type": {
+              "avro.java.string": "String",
+              "type": "string"
+            }
+          },
+          {
+            "logicalType": "uuid",
+            "name": "eventId",
+            "type": {
+              "avro.java.string": "String",
+              "type": "string"
+            }
+          },
+          {
+            "logicalType": "uuid",
+            "name": "partitionKey",
+            "type": {
+              "avro.java.string": "String",
+              "type": "string"
+            }
+          },
+          {
+            "name": "origin",
+            "type": {
+              "avro.java.string": "String",
+              "type": "string"
+            }
+          },
+          {
+            "name": "changeAgent",
+            "type": {
+              "avro.java.string": "String",
+              "type": "string"
+            }
+          }
+        ],
+        "name": "EventMetadata",
+        "type": "record"
+      }
+    },
+    {
+      "doc": "Codigo do usuario que esta enviando a mensagem",
+      "name": "sender",
+      "type": {
+        "avro.java.string": "String",
+        "type": "string"
+      }
+    },
+    {
+      "doc": "Codigo do usuario que esta recebendo a mensagem",
+      "name": "receiver",
+      "type": {
+        "avro.java.string": "String",
+        "type": "string"
+      }
+    },
+    {
+      "doc": "Mensagem",
+      "name": "message",
+      "type": {
+        "avro.java.string": "String",
+        "type": "string"
+      }
+    },
+    {
+      "doc": "Data da criacao da mensagem",
+      "name": "createdAt",
+      "type": {
+        "avro.java.string": "String",
+        "type": "string"
+      }
+    }
+  ],
+  "name": "UserChatEvent",
+  "namespace": "dating.event",
+  "type": "record"
+}

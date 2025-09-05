@@ -1,0 +1,102 @@
+server:
+  tomcat:
+    connection-timeout: ${SERVER_HTTP_CONN_TIMEOUT:5000}
+    threads:
+      max: ${SERVER_HTTP_THREAD_POOL_SIZE:50}
+
+spring:
+  datasource:
+    platform: postgresql
+    driverClassName: org.postgresql.Driver
+    jmx-enabled: true
+    hikari:
+      connectionTimeout: ${DB_POOL_CONN_TIMEOUT:10000}
+      idleTimeout: ${DB_POOL_IDLE_TIMEOUT:5000}
+      validationTimeout: ${DB_VALIDATION_TIMEOUT:5000}
+      maxLifetime: ${DB_POOL_MAX_LIFETIME:1800000}
+      maximumPoolSize: ${DB_POOL_SIZE:2}
+      minimumIdle: ${DB_POOL_MIN_IDLE:1}
+      connectionTestQuery: SELECT 1
+      poolName: ${spring.application.name}_conn_pool
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false
+    properties:
+      hibernate.id.new_generator_mappings: true
+      hibernate.connection.provider_disables_autocommit: true
+      hibernate.cache.use_second_level_cache: false
+      hibernate.cache.use_query_cache: false
+      hibernate.generate_statistics: false
+      hibernate.jdbc.batch_size: 100
+      hibernate.order_inserts: true
+      hibernate.order_updates: true
+      hibernate.jdbc.fetch_size: 150
+      hibernate.criteria.literal_handling_mode: BIND
+      hibernate.query.fail_on_pagination_over_collection_fetch: true
+      hibernate.query.in_clause_parameter_padding: true
+    hibernate:
+      ddl-auto: none
+  flyway:
+    enabled: true
+    schemas: dating_adm
+    default-schema: dating_adm
+    placeholders:
+      schema: dating_adm
+    locations: classpath:db/migration  # ou outro path, se preferir
+    baseline-on-migrate: true
+    validate-on-migrate: true
+    out-of-order: true  # se quiser permitir execução fora de ordem
+  task:
+    scheduling:
+      pool:
+        size: ${SERVER_SCHEDULING_THREAD_POOL_SIZE:5}
+      thread-name-prefix: schedule-
+  threads:
+    virtual:
+      enabled: ${SERVER_VIRTUAL_THREADS_ENABLED:true}
+  cloud:
+    openfeign:
+      httpclient:
+        hc5:
+          enabled: true
+      client:
+        config:
+          default:
+            connectTimeout: 15000
+            readTimeout: 15000
+            loggerLevel: basic
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
+        slidingWindowSize: 100
+        minimumNumberOfCalls: 100
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 10s
+        failureRateThreshold: 100
+
+app:
+  instance:
+    datacenter: ${APP_INSTANCE_DATACENTER:local}
+  owner:
+    channel: ${APP_OWNER_CHANNEL:local}
+    email: ${APP_OWNER_EMAIL:local}
+
+http:
+  client:
+    connect-timeout: ${HTTP_CLIENT_CONN_TIMEOUT:1000}
+    response-timeout: ${HTTP_CLIENT_RESP_TIMEOUT:10000}
+
+logging:
+  level:
+    ROOT: INFO
+    br.com.dating: INFO
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+
+outboxPublisher:
+  maxResults: 500
+  maxConcurrency: 15

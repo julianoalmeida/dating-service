@@ -1,0 +1,44 @@
+server:
+  port: ${SERVER_PORT:8085}
+
+spring:
+  application:
+    name: dating-events-consumer
+  cloud:
+    discovery.client.composite-indicator.enabled: false
+  profiles:
+    active: local
+  http:
+    encoding:
+      enabled: true
+      charset: UTF-8
+      forced: true
+  config:
+    import: optional:classpath:core.application.yml,optional:classpath:publisher.application.yml
+
+management:
+  endpoints:
+    web.exposure.include: health,metrics
+  endpoint:
+    health:
+      probes.enabled: true
+      group:
+        liveness.include: livenessState,refreshScope,diskSpace
+        readiness.include: readinessState,db
+      show-components: always
+      show-details: never
+  health:
+    diskspace:
+      enabled: true
+      threshold: 100MB
+  otlp:
+    metrics:
+      export:
+        resourceAttributes:
+          service:
+            name: "dating-events-consumer"
+
+kafka:
+  consumer:
+    topic:
+      user-message: fct.user.message.event

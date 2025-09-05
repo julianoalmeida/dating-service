@@ -1,0 +1,120 @@
+buildscript {
+    repositories {
+        maven { url 'https://packages.confluent.io/maven/' }
+    }
+}
+
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.1'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id "net.thauvin.erik.gradle.semver" version "1.0.4" apply false
+}
+
+group = 'br.com.dating'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+bootJar.enabled = false
+jar.enabled = true
+
+ext {
+    dep_springdoc_openapi_version = "2.5.0"
+    dep_swagger_annotations_version = "2.2.15"
+    dep_instrumentation_version = "1.32.0"
+    dep_avro_version = "1.11.4"
+    dep_kafka_streams_avro_serde_version = "7.2.1"
+    dep_arch_unit_version = "1.2.1"
+    dep_mockito_core_version = "5.2.0"
+    dep_springcloud_openfeign_version = "4.1.0"
+    dep_openfeign_h5_version = "12.3"
+    dep_json_web_token_version = "0.12.6"
+    dep_circuit_breaker_version = "3.1.0"
+}
+
+allprojects {
+    apply plugin: "eclipse"
+    apply plugin: "java"
+
+    java {
+        sourceCompatibility = "21"
+    }
+
+    repositories {
+        mavenCentral()
+        maven { url 'https://packages.confluent.io/maven/' }
+    }
+
+    dependencies {
+
+        // Spring
+        implementation 'org.springframework.boot:spring-boot-starter-aop'
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+        implementation 'org.springframework.boot:spring-boot-starter-security'
+        implementation 'org.springframework.boot:spring-boot-starter-validation'
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        implementation 'org.springframework.boot:spring-boot-starter-websocket'
+        implementation 'org.springframework.boot:spring-boot-starter-actuator'
+        implementation 'org.springframework.retry:spring-retry'
+
+        implementation 'com.google.guava:guava:33.4.8-jre'
+
+        // Circuit Breaker
+        implementation "org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j:${dep_circuit_breaker_version}"
+
+        // HTTP Client
+        implementation "org.springframework.cloud:spring-cloud-starter-openfeign:${dep_springcloud_openfeign_version}"
+        implementation "io.github.openfeign:feign-hc5:${dep_openfeign_h5_version}"
+
+        // Flyway DB
+        implementation 'org.flywaydb:flyway-core:10.1.0'
+
+        // Flyway specific for postgresql
+        runtimeOnly("org.flywaydb:flyway-database-postgresql:10.1.0")
+
+        // Driver Postgresql
+        implementation 'org.postgresql:postgresql:42.7.7'
+
+        // H2
+        runtimeOnly("com.h2database:h2")
+
+        implementation("io.confluent:kafka-avro-serializer:7.6.0")
+
+        // Micrometer
+        implementation 'io.micrometer:micrometer-registry-otlp'
+        implementation 'io.micrometer:micrometer-tracing-bridge-brave'
+        implementation "io.opentelemetry.instrumentation:opentelemetry-instrumentation-annotations:${dep_instrumentation_version}"
+
+        // JWT
+        implementation "io.jsonwebtoken:jjwt-api:${dep_json_web_token_version}"
+        runtimeOnly "io.jsonwebtoken:jjwt-impl:${dep_json_web_token_version}"
+        runtimeOnly "io.jsonwebtoken:jjwt-jackson:${dep_json_web_token_version}"
+
+        // Tests
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testImplementation 'org.springframework.security:spring-security-test'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+}
+
+subprojects {
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    tasks {
+        "test" { useJUnitPlatform() }
+    }
+}

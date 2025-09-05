@@ -1,0 +1,36 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
+plugins {
+    id "org.springframework.boot" version "3.2.1" apply false
+    id "io.spring.dependency-management" version "1.1.7"
+    id "net.thauvin.erik.gradle.semver" version "1.0.4"
+    id "com.github.davidmc24.gradle.plugin.avro" version "1.9.1"
+}
+
+dependencyManagement {
+    imports {
+        mavenBom SpringBootPlugin.BOM_COORDINATES
+    }
+}
+
+apply plugin: "com.github.davidmc24.gradle.plugin.avro"
+
+avro {
+    fieldVisibility.set("PRIVATE")
+}
+
+def withoutSlf4j = { exclude group: 'org.slf4j', module: 'slf4j-log4j12' }
+
+dependencies {
+
+    // KAFKA e AVRO
+    implementation("org.springframework.kafka:spring-kafka")
+    implementation("org.apache.avro:avro:$dep_avro_version", withoutSlf4j)
+    implementation("io.confluent:kafka-streams-avro-serde:$dep_kafka_streams_avro_serde_version", withoutSlf4j)
+
+    // Tests
+    testImplementation("org.springframework.kafka:spring-kafka-test")
+}
+
+bootJar.enabled = false
+jar.enabled = true

@@ -1,0 +1,23 @@
+curl -X POST http://localhost:8082/topics/fct.user.message.event \
+  -H "Content-Type: application/vnd.kafka.avro.v2+json" \
+  -H "Accept: application/vnd.kafka.v2+json" \
+  -d '{
+    "value_schema": "{\"type\":\"record\",\"name\":\"UserChatEvent\",\"namespace\":\"dating.event\",\"fields\":[{\"name\":\"metadata\",\"type\":{\"type\":\"record\",\"name\":\"EventMetadata\",\"fields\":[{\"name\":\"eventDate\",\"type\":\"string\"},{\"name\":\"eventId\",\"type\":\"string\"},{\"name\":\"partitionKey\",\"type\":\"string\"},{\"name\":\"origin\",\"type\":\"string\"},{\"name\":\"changeAgent\",\"type\":\"string\"}]}},{\"name\":\"sender\",\"type\":\"string\"},{\"name\":\"receiver\",\"type\":\"string\"},{\"name\":\"message\",\"type\":\"string\"},{\"name\":\"createdAt\",\"type\":\"string\"}]}",
+    "records": [
+      {
+        "value": {
+          "metadata": {
+            "eventDate": "2025-06-27T11:00:00Z",
+            "eventId": "0fd6f2f8-c07a-4714-84f6-a49b877a6fc7",
+            "partitionKey": "user123",
+            "origin": "DATING_FRONTEND",
+            "changeAgent": ""
+          },
+          "sender": "user123",
+          "receiver": "user456",
+          "message": "Mensagem via Avro",
+          "createdAt": "2025-06-26T11:00:00Z"
+        }
+      }
+    ]
+  }'

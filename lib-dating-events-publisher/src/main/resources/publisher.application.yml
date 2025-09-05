@@ -1,0 +1,14 @@
+#Kafka Local
+kafka:
+  producer:
+    clientId: ${spring.application.name}[${spring.profiles.active}][datingEventProducer]}
+    schema:
+      registry:
+        url: http://0.0.0.0:8081
+    bootstrap:
+      servers: 0.0.0.0:9092
+    ssl:
+      enabled: false
+    topic:
+      user-message: "fct.user.message.event"
+      user: "fct.user.event"

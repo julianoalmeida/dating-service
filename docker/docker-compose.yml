@@ -1,0 +1,133 @@
+version: '3'
+services:
+  postgres-db:
+    extends:
+      file: ./postgresql/docker-compose.yml
+      service: postgres-db
+    networks:
+      - dating-service-network
+  mongo-db:
+    extends:
+      file: ./mongodb/docker-compose.yml
+      service: mongo-db
+    networks:
+      - dating-service-network
+#  localstack:
+#    extends:
+#      file: ./localstack/docker-compose.yml
+#      service: localstack
+#    networks:
+#      - dating-service-network
+#  aws-cli:
+#    extends:
+#      file: ./localstack/docker-compose.yml
+#      service: aws-cli
+#    depends_on:
+#      - localstack
+#    networks:
+#      - dating-service-network
+  kafka-ui:
+    container_name: kafka-ui
+    image: provectuslabs/kafka-ui:latest
+    ports:
+      - 8080:8080
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: broker:29092
+      KAFKA_CLUSTERS_0_METRICS_PORT: 9997
+      KAFKA_CLUSTERS_0_SCHEMAREGISTRY: http://schema-registry:8081
+      KAFKA_CLUSTERS_0_KAFKACONNECT_0_NAME: first
+      KAFKA_CLUSTERS_0_KAFKACONNECT_0_ADDRESS: http://connect:8083
+      DYNAMIC_CONFIG_ENABLED: 'true'
+    networks:
+      - dating-service-network
+  zookeeper:
+    extends:
+      file: ./kafka/docker-compose.yml
+      service: zookeeper
+    networks:
+      - dating-service-network
+  broker:
+    extends:
+      file: ./kafka/docker-compose.yml
+      service: broker
+    depends_on:
+      - zookeeper
+    networks:
+      - dating-service-network
+  schema-registry:
+    extends:
+      file: ./kafka/docker-compose.yml
+      service: schema-registry
+    depends_on:
+      - broker
+    networks:
+      - dating-service-network
+  connect:
+    extends:
+      file: ./kafka/docker-compose.yml
+      service: connect
+    depends_on:
+      - broker
+      - schema-registry
+    networks:
+      - dating-service-network
+  control-center:
+    extends:
+      file: ./kafka/docker-compose.yml
+      service: control-center
+    depends_on:
+      - broker
+      - schema-registry
+      - connect
+      - ksqldb-server
+    networks:
+      - dating-service-network
+  ksql-datagen:
+    extends:
+      file: ./kafka/docker-compose.yml
+      service: ksql-datagen
+    depends_on:
+      - ksqldb-server
+      - broker
+      - schema-registry
+      - connect
+    networks:
+      - dating-service-network
+  ksqldb-cli:
+    extends:
+      file: ./kafka/docker-compose.yml
+      service: ksqldb-cli
+    depends_on:
+      - broker
+      - connect
+      - ksqldb-server
+    networks:
+      - dating-service-network
+  ksqldb-server:
+    extends:
+      file: ./kafka/docker-compose.yml
+      service: ksqldb-server
+    depends_on:
+      - broker
+      - connect
+    networks:
+      - dating-service-network
+  rest-proxy:
+    extends:
+      file: ./kafka/docker-compose.yml
+      service: rest-proxy
+    depends_on:
+      - broker
+      - schema-registry
+    networks:
+      - dating-service-network
+
+networks:
+  dating-service-network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.0.0/16
+          gateway: 172.18.0.1

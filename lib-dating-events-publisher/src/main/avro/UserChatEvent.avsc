@@ -1,0 +1,32 @@
+{
+  "namespace": "dating.event",
+  "type": "record",
+  "name": "UserChatEvent",
+  "fields": [
+    {
+      "name": "metadata",
+      "type": "dating.event.EventMetadata",
+      "doc": "Metadata do evento"
+    },
+    {
+      "name": "sender",
+      "type": "string",
+      "doc": "Codigo do usuario que esta enviando a mensagem"
+    },
+    {
+      "name": "receiver",
+      "type": "string",
+      "doc": "Codigo do usuario que esta recebendo a mensagem"
+    },
+    {
+      "name": "message",
+      "type": "string",
+      "doc": "Mensagem"
+    },
+    {
+      "name": "createdAt",
+      "type": "string",
+      "doc": "Data da criacao da mensagem"
+    }
+  ]
+}

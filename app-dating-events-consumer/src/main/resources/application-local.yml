@@ -1,0 +1,27 @@
+#Kafka Local
+kafka:
+  consumer:
+    schema:
+      registry:
+        url: http://0.0.0.0:8081
+    bootstrap:
+      servers: 0.0.0.0:9092
+    ssl:
+      enabled: false
+    listener:
+      userChatEventListener:
+        enabled: true
+
+#spring:
+#  kafka:
+#    ssl:
+#      key-store-location: "file:./certs/kafka/qa/dating.keystore.p12"
+#      key-store-password: "trocar"
+#      key-store-type: "pkcs12"
+#      trust-store-location: "file:./certs/kafka/qa/dating.truststore.p12"
+#      trust-store-password: "trocar"
+#      protocol: "TLSv1.2"
+#      trust-store-type: "pkcs12"
+#    security:
+#      protocol: "SSL"
+

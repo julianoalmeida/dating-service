@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:postgresql://localhost:5432/dating
+    username: postgres
+    password: mysecretpassword
+#    schema: dating_adm
+    hikari:
+      poolName: Hikari
+      auto-commit: false
+  jpa:
+    properties:
+      hibernate.format_sql: false
+      hibernate.jdbc.lob.non_contextual_creation: true
+      hibernate.default_schema: dating_adm
+    show-sql: true
+  cloud:
+    openfeign:
+      httpclient:
+        disable-ssl-validation: true
+
+outboxPublisher:
+  maxResults: 500
+  maxConcurrency: 15

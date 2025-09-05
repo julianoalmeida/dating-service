@@ -1,0 +1,16 @@
+---
+version: '3'
+services:
+  postgres-db:
+    image: postgres:16-alpine
+    container_name: dating_postgres # Nome amigável para o contêiner
+    environment:
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_USER: postgres
+      POSTGRES_DB: dating
+    ports:
+      - "5432:5432"
+    restart: always # Garante que o contêiner reinicie automaticamente se parar
+    volumes:
+      - ./dbsetup:/docker-entrypoint-initdb.d
+      - ./pgdata:/var/lib/postgresql/data

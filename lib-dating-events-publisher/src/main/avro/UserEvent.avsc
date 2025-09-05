@@ -1,0 +1,31 @@
+{
+  "namespace": "dating.event",
+  "type": "record",
+  "name": "UserEvent",
+  "fields": [
+    {
+      "name": "metadata",
+      "type": "dating.event.EventMetadata",
+      "doc": "Metadata do evento"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "doc": "Nome do usuario"
+    },
+    {
+      "name": "createdAt",
+      "type": "string",
+      "doc": "Data da criacao do usuário"
+    },
+    {
+      "name": "eventType",
+      "type": "string",
+      "symbols": [
+        "USER_CREATED",
+        "USER_UPDATED",
+        "USER_INACTIVATED"
+      ]
+    }
+  ]
+}

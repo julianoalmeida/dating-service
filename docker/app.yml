@@ -1,0 +1,34 @@
+version: '3'
+services:
+  app-dating-events-consumer:
+    image: app-dating-events-consumer
+    container_name: app-dating-events-consumer
+    build:
+      context: ../
+      dockerfile: app-dating-events-consumer/Dockerfile
+    environment:
+      JAVA_OPTS: '-server
+      -Dnetworkaddress.cache.ttl=60
+      -Dnetworkaddress.cache.negative.ttl=0
+      -Dfile.encoding=UTF-8'
+      SPRING_PROFILES_ACTIVE: 'local'
+
+    network_mode: "host"
+
+  app-dating-rest-api:
+    image: app-dating-rest-api
+    container_name: app-dating-rest-api
+    build:
+      context: ../
+      dockerfile: app-dating-api/Dockerfile
+    ports:
+      - "8001:8001"
+    restart: always
+    environment:
+      JAVA_OPTS: '-server
+      -Dnetworkaddress.cache.ttl=60
+      -Dnetworkaddress.cache.negative.ttl=0
+      -Dfile.encoding=UTF-8'
+      SPRING_PROFILES_ACTIVE: 'local'
+    stdin_open: true
+    tty: true

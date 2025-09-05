@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:postgresql://localhost:5432/dating
+    username: datingubr
+    password: datingubr
+    hikari:
+      poolName: Hikari
+      auto-commit: false
+
+outboxPublisher:
+  maxResults: 500
+  maxConcurrency: 15

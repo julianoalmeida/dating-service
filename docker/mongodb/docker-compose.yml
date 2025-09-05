@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  mongo-db:
+    image: mongo:6.0
+    container_name: dating_mongo
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - ./mongodata:/data/db

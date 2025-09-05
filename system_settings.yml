@@ -1,0 +1,17 @@
+system:
+  local:
+    profile: local
+  apps:
+    - name: app-dating-api
+      server_port: "20001"
+      debug_port: "8000"
+    - name: app-dating-jobs
+      server_port: "20002"
+      debug_port: "8001"
+
+database:
+  local:
+    db_name: DATING
+    db_password: ps654321
+  ddl_scripts:
+    repo: ''
